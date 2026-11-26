@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BOL and POD Chase Playbook and Cash Calculator | FreightDocDesk</title>
+<meta name="description" content="Free unbilled-load cash calculator and a copy-paste 3-email carrier BOL and POD follow-up sequence for US freight brokers.">
+<meta name="robots" content="index, follow">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230f1f38'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' font-weight='700' fill='%23ffffff' text-anchor='middle'%3EFD%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --paper:#f8f9fa;--card:#ffffff;--ink:#0f1f38;--muted:#4b5563;--line:#d9e0e7;--line-strong:#c3ccd6;--tint:#eef2f6;
+  --ok:#2f6b3f;--ok-bg:#e7f1ea;--ok-line:#bcd8c4;
+  --wait:#8a5a00;--wait-bg:#fbf1dc;--wait-line:#ecd3a0;
+  --stuck:#9a3b1f;--stuck-bg:#f7e5de;--stuck-line:#e5bba9;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--sans);overflow-wrap:break-word}
+a{color:var(--ink)}
+a:focus-visible,button:focus-visible,input:focus-visible,label:focus-visible,input:focus-visible+label{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.mono{font-family:var(--mono);font-size:.94em}
+.eyebrow{font:600 12px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;color:var(--ink);letter-spacing:-.005em}
+h1{font-size:44px;line-height:1.12;margin:0 0 18px;max-width:860px}
+h2{font-size:30px;line-height:1.2;margin:0 0 12px}
+h3{font-size:20px;line-height:1.3;margin:0 0 8px}
+p{margin:0 0 14px}
+.lede{font-size:19px;color:var(--muted);max-width:760px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.section{padding:60px 0;border-top:1px solid var(--line)}
+.section-head{max-width:760px;margin-bottom:26px}
+.section-head p{color:var(--muted)}
+
+/* Top bar */
+.topbar{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.topbar .wrap{display:flex;align-items:center;gap:10px 28px;min-height:60px;flex-wrap:wrap}
+.wordmark{font:700 19px/1 var(--serif);text-decoration:none;color:var(--ink);letter-spacing:-.01em;white-space:nowrap}
+.wordmark span{display:inline-block;width:10px;height:10px;background:var(--ink);margin-right:9px;vertical-align:1px}
+.nav{display:flex;gap:6px 22px;flex-wrap:wrap;align-items:center;flex:1}
+.nav a{font-size:14px;color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav a:hover,.nav a[aria-current]{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+
+/* Buttons */
+.cta-row{display:flex;gap:14px 20px;flex-wrap:wrap;align-items:center;margin-top:26px}
+.btn{display:inline-block;padding:14px 22px;font:600 15px/1 var(--sans);text-decoration:none;border:1px solid var(--ink);border-radius:3px;cursor:pointer}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-primary:hover{background:#1c3458}
+.btn-ghost{background:transparent;color:var(--ink)}
+.btn-ghost:hover{background:var(--tint)}
+.textlink{font-size:15px;color:var(--muted)}
+.textlink a{color:var(--ink)}
+.founder{display:inline-flex;align-items:center;gap:8px;font:600 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:18px}
+.founder::before{content:"";width:18px;height:1px;background:var(--muted)}
+
+/* Hero */
+.hero{padding:64px 0 52px}
+
+/* Cards and steps */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:4px;background:var(--card)}
+.step{padding:22px 22px 24px;border-right:1px solid var(--line)}
+.step:last-child{border-right:0}
+.step .n{font:700 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;display:inline-block;border:1px solid var(--ink);padding:5px 8px;border-radius:2px;margin-bottom:14px}
+.step p{font-size:15px;color:var(--muted);margin:0}
+.rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.rule{border-top:2px solid var(--ink);padding-top:14px}
+.rule h3{font-size:18px}
+.rule p{font-size:15px;color:var(--muted);margin:0}
+.panel-box{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:24px}
+.panel-box ul,.panel-box ol{margin:0;padding-left:20px}
+.panel-box li{margin-bottom:8px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.fill{background:var(--wait-bg);border-bottom:1px dashed var(--wait);padding:0 3px;border-radius:2px;font-style:normal}
+
+/* Pills and preview */
+.pill{display:inline-block;font:700 11px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;padding:6px 8px;border-radius:999px;border:1px solid;white-space:nowrap}
+.pill.ok{color:var(--ok);background:var(--ok-bg);border-color:var(--ok-line)}
+.pill.wait{color:var(--wait);background:var(--wait-bg);border-color:var(--wait-line)}
+.pill.stuck{color:var(--stuck);background:var(--stuck-bg);border-color:var(--stuck-line)}
+.badge-example{display:inline-block;font:700 12px/1 var(--mono);letter-spacing:.06em;color:var(--stuck);background:var(--stuck-bg);border:1px dashed var(--stuck);padding:7px 10px;border-radius:2px}
+.preview{background:var(--card);border:1px solid var(--line-strong);border-radius:4px}
+.preview-top{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--line)}
+.preview-top h3{font:700 14px/1.3 var(--mono);letter-spacing:.04em;margin:0}
+.prow{display:grid;grid-template-columns:110px minmax(0,1.3fr) 150px minmax(0,2fr);gap:6px 18px;align-items:baseline;padding:14px 22px;border-bottom:1px solid var(--line);font-size:15px}
+.prow:last-child{border-bottom:0}
+.prow .ref{font:600 13px/1.5 var(--mono)}
+.prow .lane{font-weight:600}
+.prow .why{color:var(--muted);font-size:14px}
+.preview-link{display:inline-block;margin-top:16px;font-weight:600}
+
+/* Footer */
+.site-footer{border-top:1px solid var(--line);background:var(--card);padding:30px 0 38px;font-size:14px;color:var(--muted)}
+.foot-grid{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:baseline}
+.site-footer .fw{font:700 16px/1 var(--serif);color:var(--ink)}
+.site-footer a{color:var(--ink)}
+.trust{flex-basis:100%;font:13px/1.5 var(--mono);color:var(--ink);background:var(--tint);border:1px solid var(--line);border-left:3px solid var(--ink);padding:10px 14px;margin:8px 0 0}
+.site-footer .addr{flex-basis:100%;font:13px/1.5 var(--mono)}
+.site-footer .fine{flex-basis:100%;font-size:13px;margin:0}
+.foot-links{display:flex;flex-wrap:wrap;gap:6px 20px}
+
+/* Closing */
+.closing{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:32px;display:flex;gap:20px 32px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.closing h2{margin:0 0 6px}
+.closing p{margin:0;color:var(--muted)}
+
+@media (max-width:980px){
+  .rules{grid-template-columns:1fr}
+  .prow{grid-template-columns:100px minmax(0,1fr) auto}
+  .prow .why{grid-column:1 / -1}
+}
+@media (max-width:720px){
+  .wrap{padding:0 16px}
+  h1{font-size:31px}
+  h2{font-size:24px}
+  .lede{font-size:17px}
+  .hero{padding:40px 0 40px}
+  .section{padding:42px 0}
+  .topbar{position:static}
+  .topbar .wrap{padding-top:12px;padding-bottom:12px;min-height:0}
+  .nav{flex-basis:100%;gap:6px 16px}
+    .btn{width:100%;text-align:center}
+  .steps,.two{grid-template-columns:1fr}
+  .step{border-right:0;border-bottom:1px solid var(--line)}
+  .step:last-child{border-bottom:0}
+  .preview-top{padding:14px 16px}
+  .prow{grid-template-columns:minmax(0,1fr) auto;padding:14px 16px}
+  .prow .lane{grid-column:1 / -1;order:-1}
+  .closing{padding:24px 18px}
+}
+@media print{.topbar{position:static}}
+
+.calc{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:0;background:var(--card);border:1px solid var(--line-strong);border-radius:4px}
+.calc-in{padding:24px;border-right:1px solid var(--line)}
+.calc-out{padding:24px;background:var(--tint);border-radius:0 4px 4px 0}
+.field{margin-bottom:20px}
+.field:last-child{margin-bottom:0}
+.field label{display:flex;justify-content:space-between;gap:12px;font-weight:600;font-size:15px;margin-bottom:8px}
+.field output{font:600 14px/1.5 var(--mono)}
+.field .pair{display:grid;grid-template-columns:minmax(0,1fr) 110px;gap:12px;align-items:center}
+.field input[type=range]{width:100%;accent-color:var(--ink);margin:0}
+.field input[type=number]{width:100%;font:600 15px/1.2 var(--mono);padding:8px 10px;border:1px solid var(--line-strong);border-radius:3px;background:#fff;color:var(--ink)}
+.stat{padding:16px 0;border-bottom:1px solid var(--line-strong)}
+.stat:first-child{padding-top:0}
+.stat:last-of-type{border-bottom:0}
+.stat .k{font:600 12px/1.4 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:0 0 4px}
+.stat .v{font:700 34px/1.1 var(--mono);color:var(--ink);margin:0}
+.stat .h{font-size:14px;color:var(--muted);margin:6px 0 0}
+.formula{font:13px/1.6 var(--mono);color:var(--muted);margin:16px 0 0}
+.tpl{background:var(--card);border:1px solid var(--line);border-radius:4px;margin-bottom:20px}
+.tpl-head{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--line)}
+.tpl-head h3{margin:0;font-size:18px}
+.tpl-head .when{font:600 12px/1.4 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+.copy{font:600 13px/1 var(--sans);padding:9px 14px;border:1px solid var(--ink);background:#fff;color:var(--ink);border-radius:3px;cursor:pointer;white-space:nowrap}
+.copy:hover{background:var(--tint)}
+.copy.done{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.tpl pre{margin:0;padding:18px 20px;font:14px/1.65 var(--mono);white-space:pre-wrap;word-break:break-word;color:var(--ink)}
+.check{list-style:none;margin:0;padding:0;background:var(--card);border:1px solid var(--line);border-radius:4px}
+.check li{display:grid;grid-template-columns:34px 1fr;gap:8px;padding:14px 20px;border-bottom:1px solid var(--line);font-size:15px;color:var(--muted)}
+.check li:last-child{border-bottom:0}
+.check li::before{content:"";width:18px;height:18px;border:1.5px solid var(--ink);border-radius:2px;margin-top:3px}
+.check strong{color:var(--ink)}
+.soft{margin-top:8px;padding:22px 24px;border:1px dashed var(--line-strong);border-radius:4px;background:var(--card);font-size:16px}
+.soft a{font-weight:600}
+@media (max-width:860px){
+  .calc{grid-template-columns:1fr}
+  .calc-in{border-right:0;border-bottom:1px solid var(--line)}
+  .calc-out{border-radius:0 0 4px 4px}
+}
+@media (max-width:720px){
+  .calc-in,.calc-out{padding:20px 16px}
+  .field .pair{grid-template-columns:minmax(0,1fr) 92px}
+  .stat .v{font-size:28px}
+  .tpl-head,.tpl pre{padding-left:16px;padding-right:16px}
+  .tpl pre{font-size:13px}
+  .copy{width:auto}
+  .check li{padding:14px 16px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="wordmark" href="/"><span aria-hidden="true"></span>FreightDocDesk</a>
+    <nav class="nav" aria-label="Main">
+      <a href="/pilot.html">Pilot Terms</a>
+      <a href="/playbook.html" aria-current="page">POD Playbook</a>
+      <a href="/privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero" aria-labelledby="hero-h">
+  <div class="wrap">
+    <p class="eyebrow">Free playbook for US brokerage VP Ops, Carrier Ops and Billing leads</p>
+    <h1 id="hero-h">What unbilled loads cost, and the 3 emails that get the paperwork back.</h1>
+    <p class="lede">Part 1 puts a dollar figure on the cash sitting in delivered loads you cannot invoice or fund yet. Part 2 is the exact carrier follow-up sequence we use. Take it and run it in-house. No sign-up.</p>
+  </div>
+</section>
+
+<section class="section" id="calculator" aria-labelledby="calc-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Part 1</p>
+      <h2 id="calc-h">Unbilled-load cash calculator</h2>
+      <p>Move the sliders or type your own numbers. Everything runs in your browser. Nothing is sent anywhere.</p>
+    </div>
+    <div class="calc">
+      <div class="calc-in">
+        <div class="field">
+          <label for="loads-n"><span>Stuck loads per month</span><output id="loads-o" for="loads-n">35</output></label>
+          <div class="pair">
+            <input type="range" id="loads-r" min="1" max="300" step="1" value="35" aria-label="Stuck loads per month slider">
+            <input type="number" id="loads-n" min="0" step="1" value="35" inputmode="decimal">
+          </div>
+          <p class="small muted" style="margin:6px 0 0">Delivered loads waiting on a signed BOL, POD or lumper receipt</p>
+        </div>
+
+        <div class="field">
+          <label for="value-n"><span>Average shipper invoice per load</span><output id="value-o" for="value-n">$2,200</output></label>
+          <div class="pair">
+            <input type="range" id="value-r" min="200" max="10000" step="50" value="2200" aria-label="Average shipper invoice per load slider">
+            <input type="number" id="value-n" min="0" step="50" value="2200" inputmode="decimal">
+          </div>
+          <p class="small muted" style="margin:6px 0 0">Per load, in US dollars</p>
+        </div>
+
+        <div class="field">
+          <label for="days-n"><span>Average extra days waiting on the paperwork</span><output id="days-o" for="days-n">14</output></label>
+          <div class="pair">
+            <input type="range" id="days-r" min="1" max="90" step="1" value="14" aria-label="Average extra days waiting on the paperwork slider">
+            <input type="number" id="days-n" min="0" step="1" value="14" inputmode="decimal">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="rate-n"><span>Annual cost of capital or factoring</span><output id="rate-o" for="rate-n">12%</output></label>
+          <div class="pair">
+            <input type="range" id="rate-r" min="1" max="40" step="0.5" value="12" aria-label="Annual cost of capital or factoring slider">
+            <input type="number" id="rate-n" min="0" step="0.5" value="12" inputmode="decimal">
+          </div>
+          <p class="small muted" style="margin:6px 0 0">Percent per year</p>
+        </div>
+      </div>
+      <div class="calc-out" aria-live="polite">
+        <div class="stat"><p class="k">Cash held in unbilled loads</p><p class="v" id="o-trapped">$77,000</p><p class="h">Shipper invoices that cannot go out, or be funded through factoring, until the paperwork is clean.</p></div>
+        <div class="stat"><p class="k">Annual financing or factoring drag</p><p class="v" id="o-drag">$4,253</p><p class="h">What <span id="o-days">14</span> extra days of waiting costs a year at your rate.</p></div>
+        <div class="stat"><p class="k">Staff hours spent following up</p><p class="v" id="o-hours">7 hrs</p><p class="h">Per month at 12 minutes per load. About <span id="o-hours-y">84</span> hours a year, mostly from carrier reps who would rather be covering freight.</p></div>
+        <p class="formula">Cash held = loads x invoice value.<br>Drag = loads x 12 months x value x rate x days / 365.<br>Hours = loads x 12 min / 60.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="emails" aria-labelledby="emails-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Part 2</p>
+      <h2 id="emails-h">Copy-paste 3-email carrier BOL and POD sequence</h2>
+      <p>Plain, polite and about one document. No mention of pay, rates or deductions, so the carrier reads it as a paperwork request and nothing more. Send to the carrier's billing, dispatch or office email. Swap every field in curly braces before you send.</p>
+    </div>
+
+    <div class="tpl">
+      <div class="tpl-head">
+        <div><span class="when">Email 1, Day 1</span><h3>Polite first request</h3></div>
+        <button type="button" class="copy" data-target="t1">Copy</button>
+      </div>
+      <pre id="t1">Subject: Signed POD needed, load {Load number}, delivered {Delivery date}
+
+Hi {Carrier contact name},
+
+Thanks for running load {Load number} from {Origin} to {Destination}, delivered {Delivery date}.
+
+We still need the signed POD (or signed BOL) to bill this load. Could you email a clear scan or phone photo of every page to this address? If there was a lumper, please include the receipt too.
+
+To be billing-ready it needs the receiver signature, printed name or stamp, the delivery date, and our load number on it.
+
+Thank you,
+{Your name}
+{Your company} Carrier Billing</pre>
+    </div>
+
+    <div class="tpl">
+      <div class="tpl-head">
+        <div><span class="when">Email 2, Day 3</span><h3>Follow-up</h3></div>
+        <button type="button" class="copy" data-target="t2">Copy</button>
+      </div>
+      <pre id="t2">Subject: Following up, signed POD for load {Load number}
+
+Hi {Carrier contact name},
+
+Following up on my note from {Day of first email} about load {Load number} ({Origin} to {Destination}, delivered {Delivery date}).
+
+Do you have the signed POD in the office yet, or is it still with the driver? If it is in the truck, a phone photo taken flat and in good light works fine.
+
+If it will take a few days, just reply with a date and I will check back then.
+
+Thanks,
+{Your name}
+{Your company} Carrier Billing</pre>
+    </div>
+
+    <div class="tpl">
+      <div class="tpl-head">
+        <div><span class="when">Email 3, when it comes back wrong</span><h3>Blurry, missing signature or wrong load number</h3></div>
+        <button type="button" class="copy" data-target="t3">Copy</button>
+      </div>
+      <pre id="t3">Subject: One fix needed on the POD for load {Load number}
+
+Hi {Carrier contact name},
+
+Thanks for sending the paperwork for load {Load number}. Our billing team cannot use it yet because {reason, for example: the receiver signature is missing, page 2 is cut off, or it shows a different load number}.
+
+Could you send a clearer copy of every page, or check with the driver for the receiver's signed copy? A phone photo is fine.
+
+Thanks again,
+{Your name}
+{Your company} Carrier Billing</pre>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="checklist" aria-labelledby="check-h">
+  <div class="wrap">
+    <div class="two">
+      <div>
+        <p class="eyebrow">Before it goes to Billing</p>
+        <h2 id="check-h">5-item billing-ready checklist</h2>
+        <p class="muted">Check every document the moment it lands. A POD that fails one of these bounces back from your shipper or your factor and the clock restarts.</p>
+        <ol class="check">
+          <li><span><strong>Receiver signature.</strong> The receiver's signature at delivery, in addition to the driver's.</span></li>
+          <li><span><strong>Printed name or stamp.</strong> A readable name or receiving stamp next to the signature.</span></li>
+          <li><span><strong>Delivery date.</strong> Visible and matching the delivery on file.</span></li>
+          <li><span><strong>All pages, readable.</strong> Every page of the BOL, flat, in focus, nothing cut off.</span></li>
+          <li><span><strong>Your load number.</strong> Matches the load in your TMS, plus the lumper receipt where the shipper needs one.</span></li>
+        </ol>
+      </div>
+      <div>
+        <p class="eyebrow">For text-only owner-operators</p>
+        <h2>2-line dispatcher text forward</h2>
+        <p class="muted">Some drivers never read email. Your dispatcher forwards this from their own phone.</p>
+
+    <div class="tpl">
+      <div class="tpl-head">
+        <div><span class="when">Text message</span><h3>Dispatcher forward</h3></div>
+        <button type="button" class="copy" data-target="t4">Copy</button>
+      </div>
+      <pre id="t4">Hi, this is {Your name} at {Your company} about load {Load number}, delivered {Delivery date}. Could you text a photo of the signed POD, all pages, to {Billing email or number}? Thanks.</pre>
+    </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-label="Pilot">
+  <div class="wrap">
+    <p class="soft">If your team would rather not own this follow-up, we can run it on 10 stuck loads. $0 upfront and a written report on Day 5. <a href="/pilot.html">See the 10-Load Pilot →</a></p>
+  </div>
+</section>
+
+</main>
+<script>
+(function(){
+  var ids = ['loads','value','days','rate'];
+  function num(id){ var v = parseFloat(document.getElementById(id + '-n').value); return isNaN(v) ? 0 : v; }
+  function usd(n){ return '$' + Math.round(n).toLocaleString('en-US'); }
+  function calc(){
+    var loads = num('loads'), value = num('value'), days = num('days'), rate = num('rate') / 100;
+    var trapped = loads * value;
+    var drag = loads * 12 * value * rate * days / 365;
+    var hours = loads * 12 / 60;
+    document.getElementById('o-trapped').textContent = usd(trapped);
+    document.getElementById('o-drag').textContent = usd(drag);
+    document.getElementById('o-hours').textContent = (Math.round(hours * 10) / 10).toLocaleString('en-US') + ' hrs';
+    document.getElementById('o-hours-y').textContent = Math.round(hours * 12).toLocaleString('en-US');
+    document.getElementById('o-days').textContent = days;
+    ids.forEach(function(id){ var o = document.getElementById(id + '-o'); if (o) { o.textContent = id === 'value' ? usd(num(id)) : id === 'rate' ? num(id) + '%' : num(id); } });
+  }
+  ids.forEach(function(id){
+    var r = document.getElementById(id + '-r'), n = document.getElementById(id + '-n');
+    r.addEventListener('input', function(){ n.value = r.value; calc(); });
+    n.addEventListener('input', function(){ r.value = n.value; calc(); });
+  });
+  calc();
+
+  function fallbackCopy(text){
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.copy'), function(btn){
+    btn.addEventListener('click', function(){
+      var text = document.getElementById(btn.getAttribute('data-target')).textContent;
+      var done = function(){ btn.textContent = 'Copied'; btn.classList.add('done'); setTimeout(function(){ btn.textContent = 'Copy'; btn.classList.remove('done'); }, 1800); };
+      if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(text).then(done, function(){ fallbackCopy(text); done(); }); }
+      else { fallbackCopy(text); done(); }
+    });
+  });
+})();
+</script>
+
+<footer class="site-footer">
+  <div class="wrap foot-grid">
+    <span class="fw">FreightDocDesk</span>
+    <a href="mailto:desk@freightdocdesk.com">desk@freightdocdesk.com</a>
+    <nav class="foot-links" aria-label="Footer">
+      <a href="/pilot.html">Pilot Terms</a>
+      <a href="/playbook.html">POD Playbook</a>
+      <a href="/privacy.html">Privacy</a>
+    </nav>
+    <p class="fine">Carrier paperwork desk for US freight brokers. This site sets no cookies and runs no tracking.</p>
+  </div>
+</footer>
+
+</body>
+</html>

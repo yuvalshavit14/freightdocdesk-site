@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreightDocDesk | POD and CMR Recovery for UK Road Forwarders</title>
+<meta name="description" content="We chase missing signed PODs and CMRs from your hauliers so completed files get invoiced. 10-file pilot, £0 upfront, Day-5 written report.">
+<meta name="robots" content="index, follow">
+<meta name="color-scheme" content="light">
+<link rel="canonical" href="https://freightdocdesk.com/uk/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230f1f38'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' font-weight='700' fill='%23ffffff' text-anchor='middle'%3EFD%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --paper:#f8f9fa;--card:#ffffff;--ink:#0f1f38;--muted:#4b5563;--line:#d9e0e7;--line-strong:#c3ccd6;--tint:#eef2f6;
+  --ok:#2f6b3f;--ok-bg:#e7f1ea;--ok-line:#bcd8c4;
+  --wait:#8a5a00;--wait-bg:#fbf1dc;--wait-line:#ecd3a0;
+  --stuck:#9a3b1f;--stuck-bg:#f7e5de;--stuck-line:#e5bba9;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--sans);overflow-wrap:normal;word-break:normal}
+.mono,a[href^="mailto:"]{overflow-wrap:anywhere}
+a{color:var(--ink)}
+a:focus-visible,button:focus-visible,input:focus-visible,label:focus-visible,input:focus-visible+label{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.mono{font-family:var(--mono);font-size:.94em}
+.eyebrow{font:600 12px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;color:var(--ink);letter-spacing:-.005em}
+h1{font-size:44px;line-height:1.12;margin:0 0 18px;max-width:860px}
+h2{font-size:30px;line-height:1.2;margin:0 0 12px}
+h3{font-size:20px;line-height:1.3;margin:0 0 8px}
+p{margin:0 0 14px}
+.lede{font-size:19px;color:var(--muted);max-width:760px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.section{padding:60px 0;border-top:1px solid var(--line)}
+.section-head{max-width:760px;margin-bottom:26px}
+.section-head p{color:var(--muted)}
+
+/* Top bar */
+.topbar{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.topbar .wrap{display:flex;align-items:center;gap:10px 28px;min-height:60px;flex-wrap:wrap}
+.wordmark{font:700 19px/1 var(--serif);text-decoration:none;color:var(--ink);letter-spacing:-.01em;white-space:nowrap}
+.wordmark span{display:inline-block;width:10px;height:10px;background:var(--ink);margin-right:9px;vertical-align:1px}
+.nav{display:flex;gap:6px 22px;flex-wrap:wrap;align-items:center;flex:1}
+.nav a{font-size:14px;color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav a:hover,.nav a[aria-current]{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+
+/* Buttons */
+.cta-row{display:flex;gap:14px 20px;flex-wrap:wrap;align-items:center;margin-top:26px}
+.btn{display:inline-block;padding:14px 22px;font:600 15px/1 var(--sans);text-decoration:none;border:1px solid var(--ink);border-radius:3px;cursor:pointer}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-primary:hover{background:#1c3458}
+.btn-ghost{background:transparent;color:var(--ink)}
+.btn-ghost:hover{background:var(--tint)}
+.textlink{font-size:15px;color:var(--muted)}
+.textlink a{color:var(--ink)}
+
+/* Hero */
+.hero{padding:64px 0 52px}
+
+/* Cards and steps */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:4px;background:var(--card)}
+.step{padding:22px 22px 24px;border-right:1px solid var(--line)}
+.step:last-child{border-right:0}
+.step .n{font:700 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;display:inline-block;border:1px solid var(--ink);padding:5px 8px;border-radius:2px;margin-bottom:14px}
+.step p{font-size:15px;color:var(--muted);margin:0}
+.rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.rule{border-top:2px solid var(--ink);padding-top:14px}
+.rule h3{font-size:18px}
+.rule p{font-size:15px;color:var(--muted);margin:0}
+.panel-box{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:24px}
+.panel-box ul,.panel-box ol{margin:0;padding-left:20px}
+.panel-box li{margin-bottom:8px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.fill{background:var(--wait-bg);border-bottom:1px dashed var(--wait);padding:0 3px;border-radius:2px;font-style:normal}
+
+/* Pills and preview */
+.pill{display:inline-block;font:700 11px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;padding:6px 8px;border-radius:999px;border:1px solid;white-space:nowrap}
+.pill.ok{color:var(--ok);background:var(--ok-bg);border-color:var(--ok-line)}
+.pill.wait{color:var(--wait);background:var(--wait-bg);border-color:var(--wait-line)}
+.pill.stuck{color:var(--stuck);background:var(--stuck-bg);border-color:var(--stuck-line)}
+.badge-example{display:inline-block;font:700 12px/1 var(--mono);letter-spacing:.06em;color:var(--stuck);background:var(--stuck-bg);border:1px dashed var(--stuck);padding:7px 10px;border-radius:2px}
+.preview{background:var(--card);border:1px solid var(--line-strong);border-radius:4px}
+.preview-top{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--line)}
+.preview-top h3{font:700 14px/1.3 var(--mono);letter-spacing:.04em;margin:0}
+.prow{display:grid;grid-template-columns:110px minmax(0,1.3fr) 150px minmax(0,2fr);gap:6px 18px;align-items:baseline;padding:14px 22px;border-bottom:1px solid var(--line);font-size:15px}
+.prow:last-child{border-bottom:0}
+.prow .ref{font:600 13px/1.5 var(--mono)}
+.prow .lane{font-weight:600}
+.prow .why{color:var(--muted);font-size:14px}
+.preview-link{display:inline-block;margin-top:16px;font-weight:600}
+
+/* Footer */
+.site-footer{border-top:1px solid var(--line);background:var(--card);padding:30px 0 38px;font-size:14px;color:var(--muted)}
+.foot-grid{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:baseline}
+.site-footer .fw{font:700 16px/1 var(--serif);color:var(--ink)}
+.site-footer a{color:var(--ink)}
+.site-footer .addr{flex-basis:100%;font:13px/1.5 var(--mono)}
+.site-footer .fine{flex-basis:100%;font-size:13px;margin:0}
+.foot-links{display:flex;flex-wrap:wrap;gap:6px 20px}
+
+/* Closing */
+.closing{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:32px;display:flex;gap:20px 32px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.closing h2{margin:0 0 6px}
+.closing p{margin:0;color:var(--muted)}
+
+@media (max-width:980px){
+  .rules{grid-template-columns:1fr}
+  .prow{grid-template-columns:100px minmax(0,1fr) auto}
+  .prow .why{grid-column:1 / -1}
+}
+@media (max-width:720px){
+  .wrap{padding:0 16px}
+  h1{font-size:31px}
+  h2{font-size:24px}
+  .lede{font-size:17px}
+  .hero{padding:40px 0 40px}
+  .section{padding:42px 0}
+  .topbar{position:static}
+  .topbar .wrap{padding-top:12px;padding-bottom:12px;min-height:0}
+  .nav{flex-basis:100%;gap:6px 16px}
+  .btn{width:100%;text-align:center}
+  .steps,.two{grid-template-columns:1fr}
+  .step{border-right:0;border-bottom:1px solid var(--line)}
+  .step:last-child{border-bottom:0}
+  .preview-top{padding:14px 16px}
+  .prow{grid-template-columns:minmax(0,1fr) auto;padding:14px 16px}
+  .prow .lane{grid-column:1 / -1;order:-1}
+  .closing{padding:24px 18px}
+}
+@media print{.topbar{position:static}}
+.rules.four{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 36px}
+@media (max-width:720px){.rules.four{grid-template-columns:1fr;gap:24px}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="wordmark" href="/uk/"><span aria-hidden="true"></span>FreightDocDesk</a>
+    <nav class="nav" aria-label="Main">
+      <a href="/uk/pilot.html">Pilot Terms</a>
+      <a href="/uk/playbook.html">POD Playbook</a>
+      <a href="/uk/privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero" aria-labelledby="hero-h">
+  <div class="wrap">
+    <p class="eyebrow">Carrier paperwork desk for UK road forwarders</p>
+    <h1 id="hero-h">We chase missing PODs and CMRs, check every page and ask hauliers for corrections so files get invoiced.</h1>
+    <p class="lede">10 completed files, £0 upfront, and a flat £175 fee only if at least 5 billing-accepted PODs or CMRs land with Accounts by Day 10. Miss the Day-5 report and it is free.</p>
+    <div class="cta-row">
+      <!-- SWAP_BOOKING_URL --><a class="btn btn-primary" href="https://calendar.app.google/mTe1RPfUUg3fAVv96" target="_blank" rel="noopener">Book a 15-minute call</a>
+      <span class="textlink">Prefer email? Write to <a href="mailto:desk@freightdocdesk.com">desk@freightdocdesk.com</a></span>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="gap-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Where files usually stick</p>
+      <h2 id="gap-h">Nobody has done anything wrong. The CMR is just still in the cab.</h2>
+    </div>
+    <div class="rules">
+      <div class="rule"><h3>Traffic is on live work</h3><p>Ferries, Eurotunnel slots and customs holds come first. A third chase for last month's CMR rarely makes the list.</p></div>
+      <div class="rule"><h3>Accounts needs the stamped copy</h3><p>No legible, consignee-stamped CMR or signed POD, no invoice. Completed files drift past month-end.</p></div>
+      <div class="rule"><h3>Most hauliers will send it</h3><p>The paperwork is with the driver or at the depot. It needs someone to ask, politely, more than once.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="how-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">How it works</p>
+      <h2 id="how-h">Three steps. No IT setup.</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="n">Step 1</span><h3>15-minute call</h3><p>Traffic and Accounts pick 10 stuck files with us.</p></div>
+      <div class="step"><span class="n">Step 2</span><h3>Chase, check, ask again</h3><p>We email your hauliers every working day. Faint, cropped or unsigned copies go back for a usable copy.</p></div>
+      <div class="step"><span class="n">Step 3</span><h3>Day-5 written report</h3><p>Each file marked billing-accepted, promised with a date, or stuck with the exact reason.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="prev-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Day-5 report preview</p>
+      <h2 id="prev-h">One status per file, in writing, on Day 5.</h2>
+    </div>
+    <div class="preview">
+      <div class="preview-top"><h3>POD / CMR status, Day 5</h3><span class="badge-example">EXAMPLE DATA</span></div>
+      <div class="prow"><span class="ref">UKX-49201</span><span class="lane">Northampton → Hamburg</span><span><span class="pill ok">Billing-accepted</span></span><span class="why">First scan missed page 2. Sent back. Full copy accepted by Accounts.</span></div>
+      <div class="prow"><span class="ref">UKX-47055</span><span class="lane">Leeds → Rotterdam</span><span><span class="pill wait">Promised 15 Dec</span></span><span class="why">Original is in the cab. Driver back Monday. We follow up Tuesday 10:00 if still missing.</span></div>
+      <div class="prow"><span class="ref">UKX-48402</span><span class="lane">Milton Keynes → Lille</span><span><span class="pill stuck">Stuck</span></span><span class="why">CMR shows UKX-48420, not UKX-48402. Asked the haulier if typo or wrong document.</span></div>
+    </div>
+    <a class="preview-link" href="/uk/pilot.html#sample">See the full 10-file sample report and pilot terms →</a>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="safe-h">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Before you ask</p>
+      <h2 id="safe-h">We ask for paperwork. Nothing else.</h2>
+    </div>
+    <div class="rules four">
+      <div class="rule"><h3>Your haulier relationships</h3><p>We never mention rates, payment, waiting time, demurrage or claims. If a haulier raises money, Traffic hears the same day.</p></div>
+      <div class="rule"><h3>Your customers</h3><p>We never contact your customers or consignees. If a copy can only come from them, you decide.</p></div>
+      <div class="rule"><h3>Your systems and UK GDPR</h3><p>No logins to your TMS, accounts software or main inbox. UK GDPR Art. 28 DPA signed first, data deleted within 30 days.</p></div>
+      <div class="rule"><h3>Your money</h3><p>£0 upfront. £175 only if 5 of 10 land, credited in full to Month 1.</p></div>
+    </div>
+    <p class="small muted" style="margin-top:26px;max-width:760px">Software sends the daily follow-ups. Our operations team reviews exceptions every working day, and any haulier can reply HUMAN to reach a person.</p>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing">
+      <div>
+        <h2 id="close-h">Send us 10 stuck files.</h2>
+        <p>15 minutes with Traffic and Accounts. Written report on Day 5. £0 upfront. Or write to <a href="mailto:desk@freightdocdesk.com">desk@freightdocdesk.com</a></p>
+      </div>
+      <!-- SWAP_BOOKING_URL --><a class="btn btn-primary" href="https://calendar.app.google/mTe1RPfUUg3fAVv96" target="_blank" rel="noopener">Book a 15-minute call</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap foot-grid">
+    <span class="fw">FreightDocDesk</span>
+    <a href="mailto:desk@freightdocdesk.com">desk@freightdocdesk.com</a>
+    <nav class="foot-links" aria-label="Footer">
+      <a href="/uk/pilot.html">Pilot Terms</a>
+      <a href="/uk/playbook.html">POD Playbook</a>
+      <a href="/uk/privacy.html">Privacy</a>
+    </nav>
+    <p class="fine">Carrier paperwork desk for UK road forwarders. This site sets no cookies and runs no tracking.</p>
+  </div>
+</footer>
+
+</body>
+</html>

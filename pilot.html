@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10-Load Pilot Terms | FreightDocDesk</title>
+<meta name="description" content="10-load BOL and POD pilot for US freight brokers. $0 upfront, a flat $250 only if 5 of 10 land by Day 10, written report on Day 5.">
+<meta name="robots" content="index, follow">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%230f1f38'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' font-weight='700' fill='%23ffffff' text-anchor='middle'%3EFD%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#f8f9fa;--paper:var(--bg);--card:#ffffff;--ink:#0f1f38;--muted:#4b5563;--line:#d9e0e7;--line-strong:#c3ccd6;--tint:#eef2f6;
+  --ok:#2f6b3f;--ok-bg:#e7f1ea;--ok-line:#bcd8c4;
+  --wait:#8a5a00;--wait-bg:#fbf1dc;--wait-line:#ecd3a0;
+  --stuck:#9a3b1f;--stuck-bg:#f7e5de;--stuck-line:#e5bba9;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--sans);overflow-wrap:normal;word-break:normal}
+a{color:var(--ink)}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.mono,a[href^="mailto:"]{overflow-wrap:anywhere}
+.mono{font-family:var(--mono);font-size:.94em}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+.eyebrow{font:600 12px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;color:var(--ink);letter-spacing:-.005em}
+h1{font-size:30px;line-height:1.15;margin:0 0 12px;max-width:760px}
+.nw{white-space:nowrap}
+h2{font-size:22px;line-height:1.2;margin:0 0 12px}
+h3{font-size:17px;line-height:1.3;margin:0 0 4px}
+p{margin:0 0 12px}
+.lede{font-size:17px;color:var(--muted);max-width:680px;margin:0}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.note{font-size:14px;line-height:1.5;color:var(--muted);margin:12px 0 0;max-width:720px}
+.section{padding:28px 0;border-top:1px solid var(--line)}
+
+/* Top bar */
+.topbar{background:var(--card);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:8px 28px;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
+.wordmark{font:700 19px/1 var(--serif);text-decoration:none;color:var(--ink);letter-spacing:-.01em;white-space:nowrap}
+.wordmark span{display:inline-block;width:10px;height:10px;background:var(--ink);margin-right:9px;vertical-align:1px}
+.nav{display:flex;gap:6px 16px;flex-wrap:wrap;align-items:center;flex-basis:100%}
+.nav a{font-size:14px;color:var(--muted);text-decoration:none;white-space:nowrap}
+.nav a:hover,.nav a[aria-current]{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+
+/* Buttons */
+.cta-row{display:flex;gap:10px 20px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.btn{display:block;width:100%;text-align:center;padding:15px 22px;font:600 16px/1 var(--sans);text-decoration:none;border:1px solid var(--ink);border-radius:3px}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-primary:hover{background:#1c3458}
+.textlink{font-size:15px;color:var(--muted)}
+
+/* Hero */
+.hero{padding:26px 0 30px}
+
+/* Scoreboard */
+.score{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:18px 0 8px}
+.tile{min-width:0;overflow-wrap:normal;word-break:normal;hyphens:manual;background:var(--card);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:4px;padding:12px 10px 12px;text-decoration:none;color:var(--ink)}
+.tile b{display:block;font:700 clamp(22px,7vw,36px)/1.1 var(--serif);white-space:nowrap}
+.tile span{display:block;font:13px/1.35 var(--sans);color:var(--muted);margin-top:6px}
+a.tile span{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-strong)}
+a.tile:hover{background:var(--tint)}
+
+/* Deal rules */
+.deal{list-style:none;margin:0;padding:0 16px;background:var(--card);border:1px solid var(--line);border-radius:4px}
+.deal li{padding:9px 0;line-height:1.5;border-bottom:1px solid var(--line);font-size:15px;color:var(--muted)}
+.deal li:last-child{border-bottom:0}
+.deal b{color:var(--ink)}
+
+/* Timeline */
+.timeline{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+.timeline li{min-width:0;overflow-wrap:normal;word-break:normal;position:relative;padding:0 0 14px 24px;border-left:2px solid var(--line);margin-left:6px}
+.timeline li:last-child{border-left-color:transparent;padding-bottom:0}
+.timeline li::before{content:"";position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--card);border:2px solid var(--ink)}
+.timeline .when{font:700 12px/1.4 var(--mono);letter-spacing:.06em;text-transform:uppercase;margin-right:6px;white-space:nowrap}
+.timeline p{display:inline}
+.timeline p{margin:0;font-size:15px;line-height:1.5;color:var(--muted)}
+
+/* Boundaries and checks */
+.grid2{display:grid;grid-template-columns:minmax(0,1fr);gap:0;background:var(--card);border:1px solid var(--line);border-radius:4px;list-style:none;margin:0;padding:0}
+.grid2 > *{min-width:0;padding:11px 16px;border-bottom:1px solid var(--line)}
+.grid2 h3{margin:0 0 2px;font-size:16px}
+.bounds h3{display:inline;font:700 15px/1.5 var(--sans)}
+.bounds h3::after{content:": "}
+.bounds p{display:inline}
+.grid2 > *:last-child{border-bottom:0}
+.grid2 p{margin:0;font-size:15px;line-height:1.5;color:var(--muted)}
+.checks li{position:relative;padding-left:42px;font-size:15px;line-height:1.5;color:var(--muted)}
+.checks li::before{content:"\2713";position:absolute;left:16px;top:11px;font:700 15px/1.5 var(--sans);color:var(--ok)}
+.checks b{color:var(--ink)}
+
+/* Plans */
+.plans{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.plan{min-width:0;overflow-wrap:normal;word-break:normal;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--ink);border-radius:4px;padding:12px 16px;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name price" "scope price";column-gap:12px;align-items:center}
+.plan h3{grid-area:name}
+.plan .price{grid-area:price}
+.plan .scope{grid-area:scope}
+.plan h3{font:600 12px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 2px}
+.plan .price{font:700 26px/1.1 var(--serif);margin:0;white-space:nowrap}
+.plan .price small{font-size:16px;font-weight:600;color:var(--muted)}
+.plan p{margin:0;color:var(--muted);font-size:14px;line-height:1.4}
+
+/* Disclosures */
+.more{display:grid;gap:10px}
+.more-label{margin:28px 0 10px}
+.more details{background:var(--card);border:1px solid var(--line-strong);border-radius:4px}
+.more summary{min-height:48px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 16px;cursor:pointer;list-style:none;font-weight:600;font-size:16px;line-height:1.35}
+.more summary::-webkit-details-marker{display:none}
+.more summary::after{content:"+";flex:none;width:28px;height:28px;display:grid;place-items:center;border:1px solid var(--line-strong);border-radius:50%;font:400 20px/1 var(--mono);color:var(--ink)}
+.more details[open] > summary::after{content:"\2212"}
+.more details[open] > summary{border-bottom:1px solid var(--line)}
+.more summary:hover{background:var(--tint)}
+.inner{padding:16px}
+.terms{margin:0}
+.terms > div{padding:12px 0;border-bottom:1px solid var(--line)}
+.terms > div:first-child{padding-top:0}
+.terms > div:last-child{border-bottom:0;padding-bottom:0}
+.terms dt{font-weight:700;margin-bottom:2px}
+.terms dd{margin:0;font-size:15px;color:var(--muted)}
+.terms ol,.terms ul{margin:4px 0 0;padding-left:20px}
+.terms li{margin-bottom:3px}
+.fill{background:var(--wait-bg);border-bottom:1px dashed var(--wait);padding:0 3px;border-radius:2px;font-style:normal}
+.footer-sample{font:13px/1.55 var(--mono);color:var(--ink);background:var(--tint);border:1px solid var(--line);border-left:3px solid var(--ink);padding:12px 14px;margin:6px 0 0}
+
+/* Sample report */
+.pill{display:inline-block;font:700 11px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;padding:6px 8px;border-radius:999px;border:1px solid;white-space:nowrap}
+.pill.ok{color:var(--ok);background:var(--ok-bg);border-color:var(--ok-line)}
+.pill.wait{color:var(--wait);background:var(--wait-bg);border-color:var(--wait-line)}
+.pill.stuck{color:var(--stuck);background:var(--stuck-bg);border-color:var(--stuck-line)}
+.badge-example{display:inline-block;font:700 12px/1 var(--mono);letter-spacing:.06em;color:var(--stuck);background:var(--stuck-bg);border:1px dashed var(--stuck);padding:7px 10px;border-radius:2px}
+.report-top{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center;justify-content:space-between}
+.report-top p{font-size:14px;color:var(--muted);margin:0}
+.report-title{padding:16px 16px 4px}
+.report-title h3{font:700 15px/1.3 var(--mono);letter-spacing:.04em;margin:0 0 10px}
+.meta{display:grid;grid-template-columns:minmax(0,1fr);gap:2px 24px;font:13px/1.6 var(--mono);color:var(--muted);margin:0 0 12px}
+.meta b{color:var(--ink);font-weight:600}
+.loads{width:100%;border-collapse:collapse;font-size:14px}
+.loads,.loads tbody,.loads tr,.loads td{display:block}
+.loads thead{display:none}
+.loads tbody{padding:14px 16px;border-top:1px solid var(--line)}
+.loads tr.main{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.loads td{padding:0}
+.loads .num,.loads .ref,.loads .del{font-family:var(--mono);font-size:13px;white-space:nowrap}
+.loads .ref{font-weight:600}
+.loads td.lane{flex-basis:100%;font-weight:600;order:-1}
+.loads td.del::before{content:"Delivered ";font-family:var(--sans);color:var(--muted)}
+.loads td.st{flex-basis:100%;margin:6px 0 2px}
+.loads tr.note td{color:var(--muted);margin-top:4px}
+.loads tr.note td:first-child{display:none}
+.report-foot{display:grid;grid-template-columns:minmax(0,1fr);border-top:1px solid var(--line)}
+.report-foot > div{padding:16px}
+.report-foot > div:first-child{border-bottom:1px solid var(--line)}
+.report-foot h4{font:700 12px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;margin:0 0 10px}
+.summary{margin:0}
+.summary div{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.summary dt{color:var(--muted)}
+.summary dd{margin:0;font:600 14px/1.5 var(--mono);white-space:nowrap}
+.summary-note{font-size:14px;color:var(--muted);margin:10px 0 0}
+.actions{margin:0;padding:0;list-style:none;font-size:14px}
+.actions li{display:grid;grid-template-columns:48px minmax(0,1fr);gap:10px;padding:6px 0;border-bottom:1px dashed var(--line);color:var(--muted)}
+.actions li:last-child{border-bottom:0}
+.actions .n{font:600 13px/1.6 var(--mono);color:var(--ink)}
+.report-sign{padding:12px 16px;border-top:1px solid var(--line);font:13px/1.5 var(--mono);color:var(--muted);background:var(--tint);border-radius:0 0 4px 4px}
+
+/* Closing */
+.closing{background:var(--card);border:1px solid var(--line);border-radius:4px;padding:20px 16px;display:flex;gap:16px 32px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.closing h2{margin:0 0 6px}
+.closing p{margin:0;color:var(--muted)}
+.closing .btn{flex:1 1 100%}
+
+/* Footer */
+.site-footer{border-top:1px solid var(--line);background:var(--card);padding:22px 0 28px;font-size:14px;color:var(--muted)}
+.foot-grid{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:baseline}
+.site-footer .fw{font:700 16px/1 var(--serif);color:var(--ink)}
+.site-footer a{color:var(--ink)}
+.site-footer .addr{flex-basis:100%;font:13px/1.5 var(--mono)}
+.site-footer .fine{flex-basis:100%;font-size:13px;margin:0}
+.foot-links{display:flex;flex-wrap:wrap;gap:6px 20px}
+
+@media (min-width:48rem){
+  .wrap{padding:0 24px}
+  h1{font-size:44px}
+  h2{font-size:30px;margin-bottom:18px}
+  .lede{font-size:19px}
+  .hero{padding:56px 0 52px}
+  .section{padding:52px 0}
+  .nav{flex-basis:auto;flex:1;gap:6px 22px}
+  .btn{display:inline-block;width:auto}
+  .closing{padding:30px 32px;flex-wrap:nowrap}
+  .closing .btn{flex:none}
+  .score{gap:14px;max-width:680px}
+  .tile{padding:18px 18px 16px}
+  .tile span{font-size:14px}
+  .deal{max-width:680px;padding:0 20px}
+  .timeline{grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
+  .timeline li{border-left:0;margin-left:0;padding:22px 0 0;border-top:2px solid var(--line)}
+  .timeline li:last-child{padding-bottom:0}
+  .timeline li::before{left:0;top:-7px}
+  .timeline .when{display:block;margin:0 0 4px}
+  .timeline p{display:block}
+  .grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid2 > *{padding:18px 22px}
+  .bounds h3{display:block;font:600 18px/1.3 var(--serif);margin-bottom:4px}
+  .bounds h3::after{content:none}
+  .bounds p{display:block}
+  .grid2 > *:nth-child(odd){border-right:1px solid var(--line)}
+  .grid2 > *:nth-last-child(-n+2){border-bottom:0}
+  .checks li{padding-left:50px}
+  .checks li::before{left:22px;top:18px}
+  .plans{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;max-width:760px}
+  .plan{display:block;border-left:1px solid var(--line);border-top:3px solid var(--ink);padding:22px 24px 20px}
+  .plan h3{margin-bottom:6px}
+  .plan .price{font-size:34px;margin-bottom:4px}
+  .plan p{font-size:15px}
+  .more summary{padding:14px 22px}
+  .inner{padding:20px 22px}
+  .report-top,.report-title{padding-left:22px;padding-right:22px}
+  .meta{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .loads{display:table}
+  .loads thead{display:table-header-group}
+  .loads tbody{display:table-row-group;padding:0;border-top:0;border-bottom:1px solid var(--line)}
+  .loads tr,.loads tr.main{display:table-row}
+  .loads td{display:table-cell;padding:12px 10px 2px;vertical-align:top}
+  .loads thead th{font:600 11px/1.3 var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px;background:var(--tint);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .loads thead th:first-child,.loads td:first-child{padding-left:22px}
+  .loads thead th:last-child,.loads td:last-child{padding-right:22px}
+  .loads td.lane{font-weight:600}
+  .loads td.del::before{content:none}
+  .loads td.st{margin:0}
+  .loads tr.note td{padding:2px 10px 14px;margin:0}
+  .loads tr.note td:first-child{display:table-cell;padding-left:22px}
+  .loads tr.note td:last-child{padding-right:22px}
+  .report-foot{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);border-top:0}
+  .report-foot > div{padding:20px 22px}
+  .report-foot > div:first-child{border-bottom:0;border-right:1px solid var(--line)}
+  .report-sign{padding:14px 22px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="wordmark" href="/"><span aria-hidden="true"></span>FreightDocDesk</a>
+    <nav class="nav" aria-label="Main">
+      <a href="/pilot.html" aria-current="page">Pilot Terms</a>
+      <a href="/playbook.html">POD Playbook</a>
+      <a href="/privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero" aria-labelledby="hero-h">
+  <div class="wrap">
+    <p class="eyebrow">10-load pilot for US freight brokers</p>
+    <h1 id="hero-h"><span class="nw">10 stuck loads.</span> <span class="nw">10 business days.</span> <span class="nw">$0 upfront.</span></h1>
+    <p class="lede">We chase missing signed BOLs, PODs and lumper receipts, inspect every page and ask carriers for a usable copy.</p>
+
+    <div class="score" aria-label="The deal">
+      <div class="tile"><b>$0</b><span>Upfront</span></div>
+      <div class="tile"><b>$250</b><span>If 5+ of 10 land</span></div>
+      <a class="tile" href="#sample"><b>Day 5</b><span>Written report</span></a>
+    </div>
+
+    <ul class="deal" aria-label="Deal rules">
+      <li><b>Success fee:</b> $250 flat only if at least 5 of 10 billing-ready BOLs or PODs land with Billing by Day 10. Credited 100% to Month 1.</li>
+      <li><b>Under 5 of 10:</b> $0. You keep everything recovered.</li>
+      <li><b>Day-5 guarantee:</b> Miss the written Day-5 report and the pilot is free, whatever lands.</li>
+      <li><b>Counted by any route:</b> Direct to AP or via factoring still counts. Your Billing team's call is final.</li>
+    </ul>
+
+    <div class="cta-row">
+      <!-- SWAP_BOOKING_URL --><a class="btn btn-primary" href="https://calendar.app.google/mTe1RPfUUg3fAVv96" target="_blank" rel="noopener">Book a 15-minute kickoff</a>
+      <span class="textlink">Questions? Write <a href="mailto:desk@freightdocdesk.com">desk@freightdocdesk.com</a></span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how" aria-labelledby="how-h">
+  <div class="wrap">
+    <h2 id="how-h">How it runs</h2>
+    <ol class="timeline">
+      <li><span class="when">Kickoff (15 min)</span><p>Pick 10 delivered loads, 5 oldest open (under 6 months) and 5 from the last 30 days.</p></li>
+      <li><span class="when">Days 1 to 4</span><p>Daily follow-ups from the next business day, coordinator copied. Blurry, cut-off, unsigned or wrong-load scans go back.</p></li>
+      <li><span class="when">Day 5</span><p>1-page written status on all 10: <span class="nw">billing-ready</span>, promised with a date, or stuck with the exact reason.</p></li>
+      <li><span class="when">Days 6 to 10</span><p>We follow up when a promised copy is late and keep chasing open loads. Final count with Billing on Day 10 (business days, Monday to Friday).</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="section" id="yours" aria-labelledby="yours-h">
+  <div class="wrap">
+    <h2 id="yours-h">What stays yours</h2>
+    <div class="grid2 bounds">
+      <div><h3>Money</h3><p>We never discuss rates, carrier pay, quick pay, detention, layover, TONU, lumper amounts or claims.</p></div>
+      <div><h3>Shippers</h3><p>We never email or call your shippers or receivers. Ever.</p></div>
+      <div><h3>Systems</h3><p>Zero logins to your TMS, accounting software, ERP, main inbox or carrier portal.</p></div>
+      <div><h3>Data</h3><p>NDA and Data Handling Addendum signed first. All load data deleted within 30 days, confirmed in writing.</p></div>
+    </div>
+    <p class="note">Software sends the daily follow-ups. Our operations team reviews exceptions every business day, and any carrier can reply HUMAN to reach a person within 1 business day.</p>
+  </div>
+</section>
+
+<section class="section" id="plans" aria-labelledby="plans-h">
+  <div class="wrap">
+    <h2 id="plans-h">If it works</h2>
+    <div class="plans">
+      <div class="plan"><h3>Desk</h3><p class="price">$750<small>/mo</small></p><p class="scope">Up to 60 chased loads a month</p></div>
+      <div class="plan"><h3>Desk Plus</h3><p class="price">$1,400<small>/mo</small></p><p class="scope">Up to 150 chased loads a month</p></div>
+    </div>
+    <p class="note">Month to month. Cancel with one email. $250 pilot fee credited in full to Month 1. Excludes any sales tax.</p>
+  </div>
+</section>
+
+<section class="section" id="fit" aria-labelledby="fit-h">
+  <div class="wrap">
+    <h2 id="fit-h">4 quick fit checks on the call</h2>
+    <ul class="grid2 checks">
+      <li><b>7 of 10 carriers answer email</b> (up to 3 can be text-only via your dispatcher).</li>
+      <li><b>No open disputes</b> on the 10 loads (a normal No POD, No Pay hold is fine).</li>
+      <li><b>Both desks join</b> the 15-minute call (Billing and Carrier Ops).</li>
+      <li><b>One person who can say yes or no</b> after seeing the results.</li>
+    </ul>
+    <p class="note">If one does not fit, we say so on the call and do not start.</p>
+    <p class="eyebrow more-label" id="details-h">Inspect the details</p>
+    <div class="more" role="group" aria-labelledby="details-h">
+
+      <details id="sample">
+        <summary>Example Day-5 report for 10 loads (2 scans sent back, 1 wrong load #)</summary>
+        <div class="report">
+          <div class="report-top">
+            <span class="badge-example">EXAMPLE DATA (FOR ILLUSTRATION ONLY)</span>
+            <p>Fictional loads and carriers. The exact format you receive on Day 5.</p>
+          </div>
+          <div class="report-title">
+            <h3>BOL / POD STATUS REPORT, DAY 5</h3>
+            <div class="meta">
+              <div><b>Client:</b> Example Brokerage Inc.</div>
+              <div><b>Pilot Day 1:</b> Mon Dec 7, 2026</div>
+              <div><b>Status at:</b> Fri Dec 11, 2026, 8:30 AM CT</div>
+              <div><b>Day 10:</b> Fri Dec 18, 2026</div>
+              <div style="grid-column:1 / -1">Prepared and reviewed by FreightDocDesk Operations</div>
+            </div>
+          </div>
+          <table class="loads">
+          <thead><tr><th>#</th><th>Load #</th><th>Lane</th><th>Delivered</th><th>Carrier</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr class="main"><td class="num">01</td><td class="ref">BRK-30418</td><td class="lane">Chicago IL → Atlanta GA</td><td class="del">Jul 14</td><td>Carrier A</td><td class="st"><span class="pill ok">Billing-ready</span></td></tr>
+            <tr class="note"><td></td><td colspan="5">Signed BOL, all 3 pages. Receiver signature, printed name and date readable. Sent to Billing Tue Dec 8. Billing accepted.</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="main"><td class="num">02</td><td class="ref">BRK-33811</td><td class="lane">Savannah GA → Charlotte NC</td><td class="del">Nov 30</td><td>Carrier B</td><td class="st"><span class="pill ok">Billing-ready</span></td></tr>
+            <tr class="note"><td></td><td colspan="5">The carrier's factoring company emailed the POD straight to your AP inbox Wed Dec 9. We checked it. Counts under the by-any-route rule. Billing accepted.</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="main"><td class="num">03</td><td class="ref">BRK-33702</td><td class="lane">Laredo TX → Nashville TN</td><td class="del">Nov 24</td><td>Carrier C</td><td class="st"><span class="pill ok">Billing-ready</span></td></tr>
+            <tr class="note"><td></td><td colspan="5">Clean scan with the lumper receipt attached, received Tue Dec 8. Billing accepted.</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="main"><td class="num">04</td><td class="ref">BRK-33640</td><td class="lane">Allentown PA → Baltimore MD</td><td class="del">Nov 20</td><td>Carrier D</td><td class="st"><span class="pill ok">Billing-ready</span></td></tr>
+            <tr class="note"><td></td><td colspan="5">First photo cut off the receiver signature. Full photo received Thu Dec 10. Billing accepted.</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="main"><td class="num">05</td><td class="ref">BRK-31877</td><td class="lane">Dallas TX → Memphis TN</td><td class="del">Sep 22</td><td>Carrier E</td><td class="st"><span class="pill wait">Promised Mon Dec 14</span></td></tr>
+            <tr class="note"><td></td><td colspan="5">Owner-operator. Paperwork is still in the truck. Driver replied to your dispatcher's text and will scan it at a truck stop Monday.</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="main"><td class="num">06</td><td class="ref">BRK-31204</td><td class="lane">Ontario CA → Phoenix AZ</td><td class="del">Aug 28</td><td>Carrier F</td><td class="st"><span class="pill wait">Promised Tue Dec 15</span></td></tr>
+            <tr class="note"><td></td><td colspan="5">Dispatch confirmed they hold the signed POD. Their billing office scans on Tuesday.</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="main"><td class="num">07</td><td class="ref">BRK-33590</td><td class="lane">Newark NJ → Columbus OH</td><td class="del">Nov 17</td><td>Carrier G</td><td class="st"><span class="pill stuck">Stuck</span></td></tr>
+            <tr class="note"><td></td><td colspan="5">POD has the driver signature but no receiver signature. Carrier says the receiving clerk did not sign at the dock.</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="main"><td class="num">08</td><td class="ref">BRK-30755</td><td class="lane">Fontana CA → Salt Lake City UT</td><td class="del">Aug 3</td><td>Carrier H</td><td class="st"><span class="pill stuck">Stuck</span></td></tr>
+            <tr class="note"><td></td><td colspan="5">Page 2 of the BOL is too blurry to read the receiver's date and seal number. Clearer copy asked for Thu Dec 10. No reply yet.</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="main"><td class="num">09</td><td class="ref">BRK-29966</td><td class="lane">Joliet IL → Indianapolis IN</td><td class="del">Jun 30</td><td>Carrier I</td><td class="st"><span class="pill stuck">Stuck</span></td></tr>
+            <tr class="note"><td></td><td colspan="5">Signed POD received, but your shipper needs the lumper receipt with it and the carrier has not sent the scan. We asked for the scan only. No discussion of the lumper amount.</td></tr>
+          </tbody>
+          <tbody>
+            <tr class="main"><td class="num">10</td><td class="ref">BRK-33115</td><td class="lane">Kansas City MO → Denver CO</td><td class="del">Nov 12</td><td>Carrier J</td><td class="st"><span class="pill stuck">Stuck</span></td></tr>
+            <tr class="note"><td></td><td colspan="5">BOL shows load BRK-33151, not BRK-33115. Asked the carrier to confirm if it is a typo or the wrong paperwork.</td></tr>
+          </tbody>
+          </table>
+          <div class="report-foot">
+            <div>
+              <h4>Summary at Day 5</h4>
+              <dl class="summary">
+                <div><dt>Billing-ready and accepted</dt><dd>4 of 10</dd></div>
+                <div><dt>Promised with a date</dt><dd>2 of 10</dd></div>
+                <div><dt>Stuck</dt><dd>4 of 10</dd></div>
+                <div><dt>Target by Day 10</dt><dd>5 of 10</dd></div>
+              </dl>
+              <p class="summary-note">One of the 2 promised loads gets us there.</p>
+            </div>
+            <div>
+              <h4>Next actions</h4>
+              <ul class="actions">
+                <li><span class="n">01-04</span><span>Done. No action.</span></li>
+                <li><span class="n">05</span><span>Follow up Mon Dec 14 at 2 PM CT if no photo. We draft a second 2-line text for your dispatcher to forward.</span></li>
+                <li><span class="n">06</span><span>Follow up Tue Dec 15 if no scan by 11 AM CT.</span></li>
+                <li><span class="n">07</span><span>Your decision: do you want Carrier Ops to ask the receiver for their signed copy? We never contact your shippers or receivers.</span></li>
+                <li><span class="n">08</span><span>Second follow-up Mon Dec 14 asking for a phone photo of page 2, taken flat and in good light.</span></li>
+                <li><span class="n">09</span><span>Follow up Mon Dec 14. If the receipt is lost, we hand it to your Carrier Ops. Lumper charges stay with your team.</span></li>
+                <li><span class="n">10</span><span>If the carrier confirms a typo, we ask Billing if a corrected BOL or a short note from the carrier works for the shipper.</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="report-sign">Questions: FreightDocDesk Operations, <a href="mailto:desk@freightdocdesk.com">desk@freightdocdesk.com</a></div>
+        </div>
+      </details>
+
+      <details id="full-terms">
+        <summary>Read full operating rules, intake list and carrier email footer</summary>
+        <div class="inner">
+          <dl class="terms">
+            <div>
+              <dt>What billing-ready means</dt>
+              <dd>Receiver signature, printed name or stamp, delivery date, all pages, your load number, and the lumper receipt where your shipper needs one.</dd>
+            </div>
+            <div>
+              <dt>Which 10 loads</dt>
+              <dd>Delivered loads held from invoicing or factoring because the signed paperwork is missing, unsigned, blurry or shows the wrong load number. The 5 oldest still open (delivered under 6 months ago) and 5 from the last 30 days.</dd>
+            </div>
+            <div>
+              <dt>Intake list, 5 fields per load</dt>
+              <dd>
+                <ol>
+                  <li>Load number</li>
+                  <li>Carrier name</li>
+                  <li>MC number</li>
+                  <li>Carrier billing or dispatch email</li>
+                  <li>What is wrong with the paperwork</li>
+                </ol>
+                Nothing else.
+              </dd>
+            </div>
+            <div>
+              <dt>Sending mailbox</dt>
+              <dd>A dedicated mailbox in your company's name, such as <span class="mono">yourbrokerage@freightdocdesk.com</span>. You can move it to your own domain in Month 1.</dd>
+            </div>
+            <div>
+              <dt>How the software works</dt>
+              <dd>An automated assistant that runs on AI software drafts, sends and checks the daily follow-ups. Our operations team reviews every exception each business day. The assistant only asks for documents and checks them. It makes no payment, claim or compliance decisions. A carrier who asks us to stop gets no more emails, and your team is told the same day.</dd>
+            </div>
+            <div>
+              <dt>The exact footer on every carrier email</dt>
+              <dd>
+                <p class="footer-sample">Automated assistant for <em class="fill">Your Company</em> billing desk, supervised by a human specialist. Reply HUMAN anytime.</p>
+              </dd>
+            </div>
+            <div>
+              <dt>Fit check, in full</dt>
+              <dd>No active cargo claim, shortage, damage or lumper dispute on any of the 10, and no carrier you owe overdue or disputed money on other loads. For up to 3 text-only owner-operators, we draft a 2-line message and your dispatcher forwards it from their own phone.</dd>
+            </div>
+            <div>
+              <dt>Carrier and data firewall</dt>
+              <dd>
+                <ul>
+                  <li>No talk of money with carriers. If a carrier raises it, it goes to your team the same day.</li>
+                  <li>Cargo claims, shortages, overages and damage go straight to you.</li>
+                  <li>Polite follow-ups for the paperwork and nothing else.</li>
+                  <li>No contact with your shippers or receivers. If paperwork can only come from them, we tell you and you decide.</li>
+                  <li>No claims, deviations or liability accepted in your name.</li>
+                  <li>We never text drivers ourselves.</li>
+                  <li>No access to your TMS, accounting software, ERP, main inbox, carrier portal or bank.</li>
+                  <li>No load data before the NDA and Data Handling Addendum are signed. All of it deleted within 30 days of the pilot ending or cancellation, confirmed in writing.</li>
+                </ul>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing">
+      <div>
+        <h2 id="close-h">Send us 10 stuck loads.</h2>
+        <p>15-minute kickoff. Written report on Day 5. $0 upfront. Or write <a href="mailto:desk@freightdocdesk.com">desk@freightdocdesk.com</a></p>
+      </div>
+      <!-- SWAP_BOOKING_URL --><a class="btn btn-primary" href="https://calendar.app.google/mTe1RPfUUg3fAVv96" target="_blank" rel="noopener">Book a 15-minute kickoff</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap foot-grid">
+    <span class="fw">FreightDocDesk</span>
+    <a href="mailto:desk@freightdocdesk.com">desk@freightdocdesk.com</a>
+    <nav class="foot-links" aria-label="Footer">
+      <a href="/pilot.html">Pilot Terms</a>
+      <a href="/playbook.html">POD Playbook</a>
+      <a href="/privacy.html">Privacy</a>
+    </nav>
+    <p class="fine">Carrier paperwork desk for US freight brokers. This site sets no cookies and runs no tracking.</p>
+  </div>
+</footer>
+
+<script>
+function openFromHash(){var d=location.hash&&document.getElementById(location.hash.slice(1))
+if(d&&d.tagName==='DETAILS'){d.open=true}}
+openFromHash()
+window.addEventListener('hashchange',openFromHash)
+</script>
+</body>
+</html>
